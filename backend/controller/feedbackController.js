@@ -1,9 +1,8 @@
-
+const db = require('../config/db');
 async function submitFeedback(req, res, next) {
   try {
-    const { user_name, email, feedback_text } = req.body;
-
-    const feedback = await createFeedback({ user_name, email, feedback_text });
+    const { userName, email, feedbackText , category } =  req.body;
+    const feedback = await createFeedback(userName, email,feedbackText,category);
 
     res.status(201).json({
       status: 'success',
@@ -45,14 +44,11 @@ async function getAllFeedback(req, res, next) {
   }
 }
 
-
-
-async function createFeedback(feedback) {
-  const { user_name, email, feedback_text } = feedback;
+async function createFeedback(user_name, email, feedback_text,feedback_type) {
 
   const result = await db.query(
-    'INSERT INTO feedback (user_name, email, feedback_text, created_at) VALUES ($1, $2, $3, NOW()) RETURNING *',
-    [user_name, email, feedback_text]
+    'INSERT INTO feedback ("user_name", email, "feedback_text", "feedback_type") VALUES ($1, $2, $3,$4) RETURNING *',
+    [user_name, email, feedback_text,feedback_type]
   );
 
   return result.rows[0];
