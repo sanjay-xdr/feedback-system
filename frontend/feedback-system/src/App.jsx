@@ -6,28 +6,7 @@ import Dashboard from './components/Dashboard';
 import './App.css';
 
 function App() {
-  const [feedbackData, setFeedbackData] = useState([]);
 
-  // 👇 Fetch feedback from backend on mount
-  useEffect(() => {
-    const fetchFeedback = async () => {
-      console.log('Fetching feedback...');
-      try {
-        const res = await fetch('http://localhost:3000/feedback'); // 🔥 Your backend URL here
-        const result = await res.json();
-console.log('Feedback fetched:', result);
-        setFeedbackData(result.data.feedback);
-      } catch (error) {
-        console.error('Error fetching feedback:', error);
-      }
-    };
-
-    fetchFeedback();
-  }, []);
-
-  const addFeedback = (newFeedback) => {
-    setFeedbackData([...feedbackData, { ...newFeedback, id: Date.now() }]);
-  };
 
   return (
     <Router>
@@ -45,8 +24,8 @@ console.log('Feedback fetched:', result);
         <main>
           <div className="container">
             <Routes>
-              <Route path="/" element={<FeedbackForm addFeedback={addFeedback} />} />
-              <Route path="/dashboard" element={<Dashboard feedbackData={feedbackData} />} />
+              <Route path="/" element={<FeedbackForm />} />
+              <Route path="/dashboard" element={<Dashboard/>} />
             </Routes>
           </div>
         </main>

@@ -1,8 +1,27 @@
 // components/Dashboard.js - Updated with better centering
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Clock, User, MessageSquare, Tag } from 'lucide-react';
 
-const Dashboard = ({ feedbackData }) => {
+const Dashboard = () => {
+      const [feedbackData, setFeedbackData] = useState([]);
+    
+      // 👇 Fetch feedback from backend on mount
+      useEffect(() => {
+        const fetchFeedback = async () => {
+          console.log('Fetching feedback...');
+          try {
+            const res = await fetch('http://localhost:3000/feedback'); // 🔥 Your backend URL here
+            const result = await res.json();
+    console.log('Feedback fetched:', result);
+            setFeedbackData(result.data.feedback);
+          } catch (error) {
+            console.error('Error fetching feedback:', error);
+          }
+        };
+    
+        fetchFeedback();
+      }, []);
+    
   const [filters, setFilters] = useState({
     feedback_type: 'all',
     searchTerm: ''
