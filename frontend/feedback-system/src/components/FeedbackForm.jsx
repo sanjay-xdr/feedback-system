@@ -53,21 +53,37 @@ const FeedbackForm = ({ addFeedback }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (validateForm()) {
       const timestamp = new Date().toISOString();
-      addFeedback({ ...formData, timestamp });
-      setFormData(initialFormState);
-      setSubmitted(true);
+      const feedbackData = { ...formData, timestamp };
       
-      // Reset submission message after 3 seconds
-      setTimeout(() => {
-        setSubmitted(false);
-      }, 3000);
+      try {
+        const response = await fetch(`http://localhost:3000/feedback`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(feedbackData),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to submit feedback');
+        }
+        setFormData(initialFormState);
+        setSubmitted(true);
+  
+        setTimeout(() => {
+          setSubmitted(false);
+        }, 3000);
+      } catch (error) {
+        console.error('Error submitting feedback:', error);
+      }
     }
   };
+  
 
   return (
     <div className="content-container">
