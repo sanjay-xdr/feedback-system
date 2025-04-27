@@ -4,7 +4,7 @@ import { Clock, User, MessageSquare, Tag } from 'lucide-react';
 
 const Dashboard = ({ feedbackData }) => {
   const [filters, setFilters] = useState({
-    category: 'all',
+    feedback_type: 'all',
     searchTerm: ''
   });
   
@@ -30,10 +30,10 @@ const Dashboard = ({ feedbackData }) => {
   };
 
   const filteredData = feedbackData.filter(item => {
-    const matchesCategory = filters.category === 'all' || item.category === filters.category;
+    const matchesCategory = filters.feedback_type === 'all' || item.feedback_type === filters.feedback_type;
     const matchesSearch = 
-      item.userName.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
-      item.feedbackText.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+      item.user_name.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+      item.feedback_text.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
       item.email.toLowerCase().includes(filters.searchTerm.toLowerCase());
     
     return matchesCategory && matchesSearch;
@@ -90,8 +90,8 @@ const Dashboard = ({ feedbackData }) => {
             <label htmlFor="category-filter">Filter by:</label>
             <select
               id="category-filter"
-              name="category"
-              value={filters.category}
+              name="feedback_type"
+              value={filters.feedback_type}
               onChange={handleFilterChange}
               className="filter-select"
             >
@@ -111,17 +111,17 @@ const Dashboard = ({ feedbackData }) => {
         ) : (
           <div className="feedback-list">
             <div className="sort-header">
-              <div className="sort-item" onClick={() => handleSort('timestamp')}>
+              <div className="sort-item" onClick={() => handleSort('created_at')}>
                 <Clock size={16} />
-                Date {sortConfig.key === 'timestamp' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                Date {sortConfig.key === 'created_at' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
               </div>
-              <div className="sort-item" onClick={() => handleSort('userName')}>
+              <div className="sort-item" onClick={() => handleSort('user_name')}>
                 <User size={16} />
-                Name {sortConfig.key === 'userName' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                Name {sortConfig.key === 'user_name' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
               </div>
-              <div className="sort-item" onClick={() => handleSort('category')}>
+              <div className="sort-item" onClick={() => handleSort('feedback_type')}>
                 <Tag size={16} />
-                Category {sortConfig.key === 'category' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                Category {sortConfig.key === 'feedback_type' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
               </div>
             </div>
             
@@ -129,22 +129,22 @@ const Dashboard = ({ feedbackData }) => {
               <div key={item.id} className="feedback-card">
                 <div className="feedback-header">
                   <div className="user-info">
-                    <h3>{item.userName}</h3>
+                    <h3>{item.user_name}</h3>
                     <span className="email">{item.email}</span>
                   </div>
                   <div className="feedback-meta">
-                    <span className={`category-tag ${getCategoryColor(item.category)}`}>
-                      {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+                    <span className={`category-tag ${getCategoryColor(item.feedback_type)}`}>
+                      {item.feedback_type.charAt(0).toUpperCase() + item.feedback_type.slice(1)}
                     </span>
                     <span className="timestamp">
                       <Clock size={14} />
-                      {formatDate(item.timestamp)}
+                      {formatDate(item.created_at)}
                     </span>
                   </div>
                 </div>
                 <div className="feedback-content">
                   <MessageSquare size={16} />
-                  <p>{item.feedbackText}</p>
+                  <p>{item.feedback_text}</p>
                 </div>
               </div>
             ))}
@@ -158,19 +158,19 @@ const Dashboard = ({ feedbackData }) => {
           </div>
           <div className="stat-item">
             <span className="stat-value">
-              {feedbackData.filter(item => item.category === 'suggestion').length}
+              {feedbackData.filter(item => item.feedback_type === 'suggestion').length}
             </span>
             <span className="stat-label">Suggestions</span>
           </div>
           <div className="stat-item">
             <span className="stat-value">
-              {feedbackData.filter(item => item.category === 'bug').length}
+              {feedbackData.filter(item => item.feedback_type === 'bug').length}
             </span>
             <span className="stat-label">Bug Reports</span>
           </div>
           <div className="stat-item">
             <span className="stat-value">
-              {feedbackData.filter(item => item.category === 'feature').length}
+              {feedbackData.filter(item => item.feedback_type === 'feature').length}
             </span>
             <span className="stat-label">Feature Requests</span>
           </div>

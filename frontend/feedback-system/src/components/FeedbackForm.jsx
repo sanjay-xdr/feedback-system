@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { CheckCircle } from 'lucide-react';
 
-const FeedbackForm = ({ addFeedback }) => {
+const FeedbackForm = () => {
   const initialFormState = {
     userName: '',
     email: '',

@@ -6,14 +6,24 @@ import Dashboard from './components/Dashboard';
 import './App.css';
 
 function App() {
-  const [feedbackData, setFeedbackData] = useState(() => {
-    const savedFeedback = localStorage.getItem('feedback');
-    return savedFeedback ? JSON.parse(savedFeedback) : [];
-  });
+  const [feedbackData, setFeedbackData] = useState([]);
 
+  // 👇 Fetch feedback from backend on mount
   useEffect(() => {
-    localStorage.setItem('feedback', JSON.stringify(feedbackData));
-  }, [feedbackData]);
+    const fetchFeedback = async () => {
+      console.log('Fetching feedback...');
+      try {
+        const res = await fetch('http://localhost:3000/feedback'); // 🔥 Your backend URL here
+        const result = await res.json();
+console.log('Feedback fetched:', result);
+        setFeedbackData(result.data.feedback);
+      } catch (error) {
+        console.error('Error fetching feedback:', error);
+      }
+    };
+
+    fetchFeedback();
+  }, []);
 
   const addFeedback = (newFeedback) => {
     setFeedbackData([...feedbackData, { ...newFeedback, id: Date.now() }]);
