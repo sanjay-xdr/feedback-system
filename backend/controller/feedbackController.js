@@ -14,29 +14,15 @@ async function submitFeedback(req, res, next) {
   }
 }
 
-async function getAllFeedback(req, res, next) {
+async function fetchAllFeedback(req, res, next) {
+  console.log('Fetching all feedback...');
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const offset = (page - 1) * limit;
 
-
-    const feedback = await getAllFeedback(limit, offset);
-
-
-    const totalCount = await countAllFeedback();
-
-
+    const feedback = await getAllFeedback();
     res.status(200).json({
       status: 'success',
       data: {
         feedback,
-        pagination: {
-          total: totalCount,
-          page,
-          limit,
-          pages: Math.ceil(totalCount / limit),
-        },
       },
     });
   } catch (error) {
@@ -55,10 +41,9 @@ async function createFeedback(user_name, email, feedback_text,feedback_type) {
 }
 
 
-async function getAllFeedback(limit, offset) {
+async function getAllFeedback() {
   const result = await db.query(
-    'SELECT * FROM feedback ORDER BY created_at DESC LIMIT $1 OFFSET $2',
-    [limit, offset]
+    'SELECT * FROM feedback ORDER BY created_at DESC'
   );
 
   return result.rows;
@@ -74,5 +59,5 @@ async function countAllFeedback() {
 
 module.exports = {
   submitFeedback,
-  getAllFeedback,
+  fetchAllFeedback,
 };
