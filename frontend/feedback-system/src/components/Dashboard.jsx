@@ -92,6 +92,31 @@ const Dashboard = () => {
     <div className="content-container">
       <div className="card dashboard">
         <h2>Feedback Dashboard</h2>
+
+        <div className="stats-summary">
+          <div className="stat-item">
+            <span className="stat-value">{feedbackData.length}</span>
+            <span className="stat-label">Total Entries</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-value">
+              {feedbackData.filter(item => item.feedback_type === 'suggestion').length}
+            </span>
+            <span className="stat-label">Suggestions</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-value">
+              {feedbackData.filter(item => item.feedback_type === 'bug').length}
+            </span>
+            <span className="stat-label">Bug Reports</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-value">
+              {feedbackData.filter(item => item.feedback_type === 'feature').length}
+            </span>
+            <span className="stat-label">Feature Requests</span>
+          </div>
+        </div>
         
         <div className="dashboard-filters">
           <div className="search-container">
@@ -170,30 +195,7 @@ const Dashboard = () => {
           </div>
         )}
         
-        <div className="stats-summary">
-          <div className="stat-item">
-            <span className="stat-value">{feedbackData.length}</span>
-            <span className="stat-label">Total Entries</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-value">
-              {feedbackData.filter(item => item.feedback_type === 'suggestion').length}
-            </span>
-            <span className="stat-label">Suggestions</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-value">
-              {feedbackData.filter(item => item.feedback_type === 'bug').length}
-            </span>
-            <span className="stat-label">Bug Reports</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-value">
-              {feedbackData.filter(item => item.feedback_type === 'feature').length}
-            </span>
-            <span className="stat-label">Feature Requests</span>
-          </div>
-        </div>
+     
       </div>
     </div>
   );
