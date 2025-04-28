@@ -4,6 +4,10 @@ This repository contains both the backend and frontend for the Feedback System. 
 
 ---
 
+
+https://github.com/user-attachments/assets/34607a76-8179-44ba-ae2c-acbaf237430e
+
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed on your system:
